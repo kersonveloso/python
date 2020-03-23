@@ -191,3 +191,73 @@ Optional arguments `start` and `end` can be added, and in this case, the area of
 Most programs in Python use **containers**, these are data types that allow you to work with any number of objects. You can think of them as real containers filled with numerous things. The way objects are arranged in a container depends on the container type. Examples of built-in Python containers include lists, tuples, sets, dictionaries, strings, and bytes. You will meet these containers later!
 
 When working with containers, you often have to check if a value is present in your container. In Python, operators `in` and `not in` are used for this purpose. The syntax is the same for all containers: `value in container` returns `True` if value exists in container and `False` otherwise. The `not in` operator does the opposite thing, it returns `True` if value does not exist in container.
+
+### Testing for membership
+
+Since it's intuitively more difficult to compare a string to a container, we could say that the membership operator works with strings in a particular way.
+
+The syntax is `pattern in text`. Here, the left operand should be a string, and membership test checks if text contains pattern as a substring, that is, a part of this string. If membership test returns `True`, this means that there exists a position in `text` starting from which you can read `pattern` in `text`.  An empty string is considered to be a substring of any string.
+
+```python
+print('apple' in 'pineapple')  # True
+print('milk' in 'yogurt')      # False
+print('' in '')                # True
+print('' not in 'lemon')       # False
+```
+
+## Comparison operators
+
+Comparison or relation operations let you compare two values and determine the relation between them. There are ten comparison operators in Python:
+
+* `<` strictly less than
+* `<=` less than or equal
+* `>` strictly greater than
+* `>=` greater than or equal
+* `==` equal
+* `!=` not equal
+* `is` object identity
+* `is not` negated object identity
+* `in` membership
+* `not in` negated membership.
+
+The result of applying these operators is always `bool`. The following sections focus on the first six operators, but you can find more details about identity and membership testing in the next topics.
+
+## if-else
+
+### Simple if-else
+
+An if-else statement is another type of conditional expressions in Python. It differs from an `if` statement by the presence of the additional keyword `else`. The block of code that `else` contains executes when the condition of your `if` statement does not hold (the Boolean value is False). Since an `else` statement is an alternative for an `if` statement, only one block of code can be executed. Also,  `else` doesn't require any condition:
+
+```python
+if today == "holiday":
+    print("Lucky you!")
+else:
+    print("Keep your chin up, then.")
+```
+
+Note that the 4-space indentation rule applies here too.
+
+As you may soon find out, programmers do like all sorts of shortcuts. For conditional expressions there's a trick as well – you can write an if-else statement in one line just like that:
+
+`print("It’s a day now!" if sun else "It’s a night for sure!")`
+
+Or, more generally:
+
+`first_alternative if condition else second_alternative`
+
+It's a matter of convenience, but remember that the code you create should still be readable.
+
+### Nested if-else
+
+It should be mentioned, that if-else statements can be nested the same way as if statements. An additional conditional expression may appear after the if section as well as after the else section. Once again, don't forget to indent properly:
+
+```python
+if x < 100:
+    print('x < 100')
+else:
+    if x == 100:
+        print('x = 100')
+    else:
+        print('x > 100')
+    print('This will be printed only because x >= 100')
+```
