@@ -261,3 +261,98 @@ else:
         print('x > 100')
     print('This will be printed only because x >= 100')
 ```
+
+## Scope
+
+### LEGB rule
+
+A variable resolution in Python follows the LEGB rule. That means that the interpreter looks for a name in the following order:
+
+* **Locals**. Variables defined within the function body and not declared global.
+* **Enclosing**. Names of the local scope in all enclosing functions from inner to outer.
+* **Globals**. Names defined at the top-level of a module or declared global with a global keyword.
+* **Built-in**. Any built-in name in Python.
+
+Let's consider an example to illustrate the LEGB rule:
+
+```python
+x = "global"
+def outer():
+    x = "outer local"
+    def inner():
+        x = "inner local"
+        def func():
+            x = "func local"
+            print(x)
+        func()
+    inner()
+
+outer()
+```
+
+When the `print()` function inside the `func()` is called the interpreter needs to resolve the name `x`. The search order will be as following: `func()` locals, `inner()` locals, `outer()` locals, globals, built-in names. So if we execute the code above it will print `func local`.
+
+### Keywords "nonlocal" and "global"
+
+We already mentioned one way to assign a global variable: make a definition at the top-level of a module. But there is also a special keyword `global` that allows us to declare a variable global inside a function's body.
+
+You can't change the value of a global variable inside the function without using the `global` keyword:
+
+```python
+x = 1
+def print_global():
+    print(x)
+
+print_global()  # 1
+
+def modify_global():
+    print(x)
+    x = x + 1
+
+modify_global()  # UnboundLocalError
+```
+
+An error is raised because we are trying to assign to a local variable `x` the expression that contains `x` and the interpreter can't find this variable in a local scope. To fix this error, we need to declare x global:
+
+```python
+x = 1
+def global_func():
+    global x
+    print(x)
+    x = x + 1
+ 
+global_func()  # 1
+global_func()  # 2
+global_func()  # 3
+```
+
+When `x` is `global` you can increment its value inside the function.
+
+`nonlocal` keyword lets us assign to variables in the outer (but not `global`) scope:
+
+```python
+def func():
+    x = 1
+    def inner():
+        x = 2
+        print("inner:", x)
+    inner()
+    print("outer:", x)
+
+def nonlocal_func():
+    x = 1
+    def inner():
+        nonlocal x
+        x = 2
+        print("inner:", x)
+    inner()
+    print("outer:", x)
+
+func()  # inner: 2
+        # outer: 1
+
+nonlocal_func()  # inner: 2
+                 # outer: 2
+```
+
+Though `global` and `nonlocal` are present in the language, they are not often used in practice. This is because these keywords make programs less predictable and harder to understand.
