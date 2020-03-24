@@ -356,3 +356,84 @@ nonlocal_func()  # inner: 2
 ```
 
 Though `global` and `nonlocal` are present in the language, they are not often used in practice. This is because these keywords make programs less predictable and harder to understand.
+
+## List
+
+In your programs, you often need to group several elements in order to process them as a single object. For this, you will need to use different collections. One of the most useful collections in **Python** is a list. It is one of the most important things in Python.
+
+### Creating and printing lists
+
+Look at a simple list that stores several names of dogs' breeds:
+
+```python
+dog_breeds = ['corgi', 'labrador', 'poodle', 'jack russel']
+print(dog_breeds)  # ['corgi', 'labrador', 'poodle', 'jack russel']
+```
+
+In the first line, we use square brackets to create a list that contains four elements and then assign it to the `dog_breeds` variable. In the second line, the list is printed through the variable's name. All the elements are printed in the same order as they were stored in the list because lists are **ordered**.
+
+Here is another list that contains five integers:
+
+```python
+numbers = [1, 2, 3, 4, 5]
+print(numbers)  # [1, 2, 3, 4, 5]
+```
+
+Another way to create a list is to invoke the `list` function. You do so when you want to create a list out of an **iterable** object: that is, a kind of object where you can get its elements one by one. A list itself is iterable, so are other collections in Python, as well as a string.
+
+The following example demonstrates the difference between using `list` and `[]` when creating a list:
+
+```python
+multi_elements_list = list('danger!')
+print(multi_elements_list)  # ['d', 'a', 'n', 'g', 'e', 'r', '!']
+
+single_element_list = ['danger!']
+print(single_element_list)  # ['danger!']
+```
+
+So, the `list` function creates a list containing each element from the given iterable object such as a string. You can use square brackets or invoke the `list` functions depending on your task.
+
+The square brackets and the `list` function can also be used to create **empty lists** that do not have elements at all.
+
+```python
+empty_list_1 = list()
+empty_list_2 = []
+```
+
+### Features of lists
+
+Lists can store **duplicate values** as many times as needed.
+
+```python
+on_off_list = ['on', 'off', 'on', 'off', 'on']
+print(on_off_list)  # ['on', 'off', 'on', 'off', 'on']
+```
+
+Another important thing about lists is that they can contain **different types** of elements. So there are neither restrictions, nor fixed list types, and you can add to your list any data you want, like in the following example:
+
+```python
+different_objects = ['a', 1, 'b', 2
+```
+
+### Length of a list
+
+Sometimes you need to know how many elements are there in a list. There is a built-in function called `len` that can be applied to any **iterable** object, and it returns simply the **length** of that object
+
+So, when applied to a list, it returns the number of elements in that list.
+
+```python
+numbers = [1, 2, 3, 4, 5]
+print(len(numbers))  # 5
+
+empty_list = list()
+print(len(empty_list))  # 0
+
+single_element_list = ['danger!']
+print(len(single_element_list))  # 1
+
+multi_elements_list = list('danger!')
+print(len(multi_elements_list))  # 7
+```
+
+In the example above, you can see how the `len()` function works. Again, pay attention to the difference between `list()` and `[]` as applied to strings: it may not result in what you expected.
+
