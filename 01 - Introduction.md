@@ -320,7 +320,7 @@ def global_func():
     global x
     print(x)
     x = x + 1
- 
+
 global_func()  # 1
 global_func()  # 2
 global_func()  # 3
@@ -437,3 +437,339 @@ print(len(multi_elements_list))  # 7
 
 In the example above, you can see how the `len()` function works. Again, pay attention to the difference between `list()` and `[]` as applied to strings: it may not result in what you expected.
 
+## For loop
+
+### What is iteration?
+
+Computers are known for their ability to do things which people consider to be boring and energy-consuming. For example, repeating identical tasks without any errors is one of these things. In Python, the process of repetitive execution of the same block of code is called an **iteration**.
+
+There are two types of iteration:
+
+**Definite iteration**, where the number of repetitions is stated in advance.
+
+**Indefinite iteration**, where the code block executes as long as the condition stated in advance is true.
+
+After the first iteration, the program comes back to the beginning of the code’s body and repeats it, making the so-called loop. The most used one is the `for` **loop**, named after the `for` `operator` that provides the code’s execution.
+
+### For loop syntax
+
+Here is the scheme of the loop:
+
+```pyhon
+for variable in iterable:
+    statement
+```
+
+where **statement** is a block of operations executed for each item in iterable, an object used in iteration (e.g. string or list). Variable takes the value of the next iterable after each iteration.
+
+Now try to guess which output we’ll get if we execute the following piece of code:
+
+```python
+oceans = ['Atlantic', 'Pacific', 'Indian', 'Southern', 'Arctic']
+for ocean in oceans:
+    print(ocean)
+```
+
+During each iteration the program will take the items from the list and execute the statements with them, so the output will be:
+
+```python
+Atlantic
+Pacific
+Indian
+Southern
+Arctic
+```
+
+Even strings are iterable, so you can spell the word, for example:
+
+```python
+for char in 'magic':
+    print(char)
+```
+
+Like this:
+
+```python
+m
+a
+g
+i
+c
+```
+
+### Input data processing
+
+You can also use the `input()` **function** that helps a user to pass a value to some variable and work with it. Thus, you can get the same output as with the previous piece of code:
+
+```python
+word = input()
+for char in word:
+    print(char)
+```
+
+Oh, look, you can write a piece of code with a practical purpose:
+
+```python
+times = int(input('How many times should I say "Hello"?'))
+for i in range(times):
+    print('Hello!')
+```
+
+You can, therefore, ask a user to specify the number of iterations to be performed.
+
+### Range function
+
+The `range()` function is used to specify the number of iterations. It returns a sequence of numbers from 0 (by default) and ends at a specified number. Be careful: the last number won’t be in the output.
+
+Let's look at the example below:
+
+```python
+for i in range(5):
+    print(i)
+```
+
+What we'll get is this:
+
+```python
+0
+1
+2
+3
+4
+```
+
+You can change the **starting value** if you’re not satisfied with 0, moreover, you can configure the **increment (step)** value by adding a third parameter:
+
+```python
+for i in range(5,30,5):
+    print(i)
+```
+
+According to the parameters included, we’ve asked to print the numbers from 5 to 30 with an increment value of 5. Be careful again, the last value is not included in the output:
+
+```python
+5
+10
+15
+20
+25
+```
+
+### Nested loop
+
+In Python, it is easy to put one loop inside another one – a **nested loop**. The type of inner and outer loops doesn’t matter, the first to execute is the outer loop, then the inner one executes:
+
+```python
+names = ['Rose', 'Daniel']
+surnames = ['Miller']
+for name in names:
+    for surname in surnames:
+         print(name, surname)
+```
+
+The output is shown below:
+
+```python
+Rose Miller
+Daniel Miller
+```
+
+In this example,  we use the two `for` loops to create fictional people's names. Obviously, you can deal with iterable objects of different sizes without too much fuss.
+
+## Loop control statements
+
+### Modifying loops
+
+Loop control statements are nested inside loops and designed to change their typical behavior. In this topic, we'll find out how they work and what they are used for.
+
+### How to break
+
+The **break** statement is used to terminate a loop of any type (i. e. `for` and `while` loops). It may be said that break "jumps out" of the loop where it was placed. Let’s examine a tiny example:
+
+```python
+pets = ['dog', 'cat', 'parrot']
+for pet in pets:
+    print(pet)
+    if pet == 'cat':
+        break
+```
+
+We wanted to stop the loop before it iterated for the last time. For that purpose, we introduced a condition when the loop should be stopped. The output is as follows:
+
+```python
+dog
+cat
+```
+
+Be careful where you put `print()`. If you put it at the loop’s end, the output will return only the first value – ‘dog’. This happens because **break** exits from the loop immediately.
+
+Often enough, **break** is used to stop endless while loops like this one:
+
+```python
+count = 0
+while True:
+    print("I am Infinite Loop")
+    count += 1
+    if count == 13:
+        break
+```
+
+### How to continue
+
+The **continue** operator is commonly used, too. You can stop the iteration if your condition is true and return to the beginning of the loop (that is, jump to the loop's top and continue execution with the next value). Look at the following example:
+
+```python
+pets = ['dog', 'cat', 'parrot']
+for pet in pets:
+    if pet == 'dog':
+        continue
+    print(pet)
+```
+
+The output will contain all values except the first one ('dog') since it fulfills the condition:
+
+```python
+cat
+parrot
+```
+
+Thus, the loop just skips one value and goes on running.
+
+One nuance is worth mentioning: the **continue** operator should be used moderately. Sometimes you can shorten the code by simply using an `if` statement with the **reversed** condition:
+
+```python
+pets = ['dog', 'cat', 'parrot']
+for pet in pets:
+    if pet != 'dog':
+        print(pet)
+```
+
+In this case, the output will remain the same:
+
+```python
+cat
+parrot
+```
+
+### Loop else clause
+
+If the loop didn’t encounter the break statement, an **else clause** can be used to specify a block of code to be executed after the loop.
+
+```python
+pets = ['dog', 'cat', 'parrot']
+for pet in pets:
+    print(pet)
+else:
+    print('We need a turtle!')
+```
+
+So after the loop body, the else statement will execute:
+
+```python
+dog
+cat
+parrot
+We need a turtle!
+```
+
+Importantly, loop `else` runs if and only if the loop is exited normally (without hitting **break**). Also, it is run when the loop is never executed (e. g. the condition of the `while` loop is false right from the start). Consider an example:
+
+```python
+pancakes = 2
+while pancakes > 0:
+    print("I'm the happiest human being in the world!")
+    pancakes -= 1
+    if pancakes == 0:
+        print("Now I have no pancakes!")
+        break
+else:
+    print("No pancakes...")
+```
+
+When we run the code for the first time we'll get this output:
+
+```html
+I'm the happiest human being in the world!
+I'm the happiest human being in the world!
+Now I have no pancakes!
+```
+
+Execution of the code snippet for the second time (when the condition is not met, for pancakes = 0) will end up with another message:
+
+```python
+No pancakes...
+```
+
+## OOP
+
+### Fundamentals
+
+Object-oriented programming (OOP) is a programming paradigm based on the concept of objects that interact with each other to perform the program functions. Each object can be characterized by a state and behavior. An object keeps the current state in the fields and the behavior in the methods.
+
+### Basic principles of OOP
+
+There are four basic principles of OOP. They are **encapsulation**, **abstraction**, **inheritance**, and **polymorphism**.
+
+* **Data encapsulation** is the mechanism of hiding the internal data of objects from the world. All interaction with the object and its data are performed through its public methods. Encapsulation allows programmers to protect the object from inconsistency.
+
+* **Data abstraction** means that objects should provide the simplified, abstract version of their implementations. The details of their internal work usually aren't necessary for the user, so there's no need to represent them. Abstraction also means that only the most relevant features of the object will be presented.
+
+* **Inheritance** is a mechanism for defining parent-child relationships between classes. Often objects are very similar, so inheritance allows programmers to reuse common logic and at the same time introduce unique concepts into the classes.
+
+* **Polymorphism** literally means one name and many forms, and it concerns the inheritance of the classes. Just as the name suggests, it allows programmers to define different logic of the same method. So, the name (or interface) stays the same, but the actions performed may be different. In practice, it is done with overloading or overriding.
+
+These are the key concepts of OOP. Each object-oriented language implements these principles in its own way, but the essence stays the same from language to language.
+
+### Objects
+
+The key notion of the OOP is, naturally, an **object**. There are a lot of real-world objects around you: pets, buildings, cars, computers, planes, you name it. Even a computer program may be considered as an object.
+
+It's possible to identify some important characteristics for real-world objects. For instance, for a building, we can consider a number of floors, the year of construction and the total area. Another example is a plane that can accommodate a certain number of passengers and transfer you from one city to another. These characteristics constitute the object's attributes and methods. Attributes characterize objects' data or states, and methods — its behavior.
+
+In OOP, everything can be considered an object. Programs are made from different objects interacting with each other. An object's state and behavior are usually placed together, but it's not always so. Sometimes, we will see objects without a state or methods. This, of course, depends on the purpose of the program and the nature of an object.
+
+### Classes
+
+Often, many individual objects have similar characteristics. We can say these objects belong to the same type or class.
+
+A class is another important notion of OOP. A class describes a common structure of similar objects: their fields and methods. It may be considered a template or a blueprint for similar objects. An object is an individual instance of a class.
+
+Let's look at some examples below.
+
+#### Example 1. The building class
+
+![building](building.svg)
+
+An abstract building for describing buildings as a type of object (class)
+
+Each building has the same attributes:
+
+* the number of floors (an integer number);
+* area (a floating-point number, square meters);
+* year of construction (an integer number).
+
+Each object of the building type has the same attributes but different values.
+
+For instance:
+
+* Building 1: the number of floors = 4, area = 2400.16, year of construction = 1966;
+* Building 2: the number of floors = 6, area = 3200.54, year of construction = 2001.
+
+It's quite difficult to determine the behavior of a building. But this example demonstrates attributes pretty well.
+
+#### Example 2. The plane class
+
+![small-plane](small-plane.svg)
+
+Unlike the building, it is easy to define the behavior of a plane. It can fly and transfer you between two points on the planet.
+
+An abstract plane for describing all planes as a type of object (class)
+
+Each plane has the following attributes:
+
+* a name (a string, for example, "Airbus A320" or "Boeing 777");
+* passengers capacity (an integer number);
+* standard speed (an integer number);
+* current coordinates (they are needed to navigate).
+
+Also, it has a behavior (a method): transferring passengers from one geographical point to another. This behavior changes the state of a plane, namely, its current coordinates.
