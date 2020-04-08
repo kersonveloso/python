@@ -957,3 +957,197 @@ In this topic, you've learned about class instances.
 If classes are an abstraction, a template for similar objects, a class instance is a sort of example of that class, a particular object that follows the structure outlined in the class. In your program, you can create as many objects of your class as you need.
 
 To create objects with different initial states, classes have a constructor __init__ that allows us to define necessary parameters. Reference to a particular instance within methods is done through the self keyword. Within the __init__ method, we define instance attributes that are different for all instances.
+
+## Methods
+
+If attributes define the data that the objects of a particular class have, the **methods** define their behavior. Python has several types of methods that you can create within a class but, in this topic, we will focus on the instance methods.
+
+### Method syntax
+
+Methods define the functionality of the objects that belong to the particular class. The basic syntax looks like this:
+
+```python
+# basic method syntax
+class MyClass:
+    # the constructor
+    def __init__(self, arg1):
+        self.att = arg1
+
+    # custom method
+    def do_smt(self):
+        # does something
+```
+
+You can see that declaring a method resembles declaring a function: we have keyword `def` followed by the name of the method. The parameters of the method are written inside the brackets.
+
+The first parameter of the method should always be `self`. You may remember that `self` represents the particular instance of the class. When it comes to instance methods, the first parameter that is passed to the method is the instance that called it. Let's create an instance of **MyClass** and see how this works:
+
+```python
+my_object = MyClass(some_value)
+# calling the instance method
+my_object.do_smt()
+# my_object does something
+```
+
+In this example, the my_object instance is passed implicitly so we do not write the parameter in the code. We can, however, pass the instance explicitly:
+
+```python
+MyClass.do_smt(my_object)
+# my_object does the same thing
+```
+
+These examples clearly illustrate why `self` has to be the first argument of the instance methods. If you want your method to have other parameters, just write them after the `self` keyword!
+
+### Methods vs functions
+
+Though they are quite similar, Python does make a distinction between methods and functions. The main difference lies, naturally, in the fact that methods are a part of the OOP structure while functions are not. Let's consider a specific example:
+
+```python
+# class and its methods
+class Ship:
+    def __init__(self, name, capacity):
+        self.name = name
+        self.capacity = capacity
+        self.cargo = 0
+
+    def sail(self):
+        print("{} has sailed!".format(self.name))
+
+
+# function
+def sail_function(name):
+    print("{} has sailed!".format(name))
+```
+
+What is of interest to us here is the method `sail` of the class `Ship` and the function `sail_function`. Let's call them:
+
+```python
+# creating an instance of the class Ship
+# and calling the method sail
+black_pearl = Ship("Black Pearl", 800)
+black_pearl.sail()
+# prints "Black Pearl has sailed!"
+
+
+# calling the function sail_function
+sail_function(black_pearl.name)
+# also prints "Black Pearl has sailed!"
+```
+
+The way that we've defined them, both our method and our function produce the same results but in a different way. A method is connected to an object of the class, it is not independent the way a function is. Sure they are both called by their names, but to call a method we need to invoke the class that this method belongs to.
+
+### Return
+
+So far the method hasn't returned any values since we only used the `print()` function. Obviously, just as with functions, we can define what type of data the method can return with the `return` statement. For example, let's create a method that calculates how many kilograms of cargo the ship has (initially, the weight of the cargo is given in tons):
+
+```python
+class Ship:
+    # other methods
+
+    def convert_cargo(self):
+        cargo_kg = self.cargo*1000
+        return cargo_kg
+```
+
+The method is simple: it converts the tons into kilograms (by multiplying it by 1000) and then returns the calculated value. If we were to call it, we wouldn't get any messages unless we explicitly printed the result of the function:
+
+```python
+print(black_pearl.convert_cargo())  # 0
+```
+
+Since we haven't changed the default value of the `cargo` attribute, the method would return 0 muliplied by 1000, that is also 0.
+
+## Magic Methods
+
+There are different ways to enrich the functionality of your classes in Python. One of them is creating custom methods which you've already learned about. Another way, the one that we'll cover in this topic, is using **"magic" methods**.
+
+### What are "magic" methods
+
+Magic methods are special methods that make using your objects much easier. They are recognizable in the code of the class definitions because they are enclosed in double **underscores:** `__init__` , for example, is one of those "magic" methods in Python. Since they are characterized by double underscores they are often called **dunders**.
+
+Dunders are not meant to be invoked directly by you or the user of your class, it happens internally on a certain action. For example, we do not explicitly call the `__init__` method when we create a new object of the class, but instead, this method is invoked internally. All we need to do is to define the method inside the class in a way that makes sense for our project.
+
+There are many different dunders that you can use, but in this topic, we will focus on the most helpful ones.
+
+### __new__ vs __init__
+
+So far we've been calling `__init__` the constructor of the class, but in reality, it is its initializer. New objects of the class are in fact created by the `__new__` method that in its turn calls the `__init__` method.
+
+The first argument of the `__new__` method is cls. It represents the class itself. The method returns a new instance of the class which is then passed to the `__init__` method.
+
+Usually, there is no need to define a special `__new__` method, but it can be useful if we want to return instances of other classes or restrict the number of objects in our class.
+
+Imagine, for example, that we want to create a class `Sun` and make sure that we create only one object of this class. We would need to define a class variable that would track the number of instances in the class and forbid the creation of new ones if the limit has been reached.
+
+```python
+class Sun:
+    n = 0
+
+    def __new__(cls):
+        if cls.n == 0:
+            instance = object.__new__(cls)
+            cls.n += 1
+            return instance
+```
+
+If we now try to create 2 objects of this class we will not succeed:
+
+```python
+sun1 = Sun()
+sun2 = Sun()
+
+print(sun1)  # <__main__.Sun object at 0x1106884a8>
+print(sun2)  # None
+```
+
+### __str__ vs __repr__
+
+Printing out information and data is very important when programming. You can print the results of calculations for yourself or the user of your program, find the mistakes in the code or print out messages.
+
+For example, let's consider the class `Transaction`:
+
+```python
+class Transaction:
+    def __init__(self, number, funds):
+        self.number = number
+        self.funds = funds
+        self.status = "active"
+```
+
+If we create a transaction and try to print it out we will not get what we want:
+
+```python
+payment = Transaction("000001", 9999.999)
+print(payment)
+# example of the output: <__main__.Transaction object at 0x11068f5f8>
+```
+
+Instead of the values that we would like to see, we get information about the object itself. This can be altered if we deal with `__str__` or `__repr__` methods.
+
+As the names suggest, `__str__` defines the behavior of the `str()` function and `__repr__` defines the `repr()` function. A general rule with the `__str__` and `__repr__` methods is that the output of the `__str__` should be highly readable and the output of the `__repr__` should be unambiguous. In other words, `__str__` creates a representation for users and `__repr__` creates a representation for developers.
+
+A good rule is to always define the `__repr__` method first since it is the method used by developers in debugging. It is also a fallback method for `__str__`
+which means that if the `__str__` method isn't defined, in the situations where it's needed, the `__repr__` will be called instead.
+
+In our example here, let's create the `__repr__` method that would create an unambiguous representation of the transaction and all its attributes.
+
+```python
+class Transaction:
+    def __init__(self, number, funds):
+        self.number = number
+        self.funds = funds
+        self.status = "active"
+
+    def __repr__(self):
+        return "Transaction {}. Amount: {}. Status: {}".format(self.number,
+                                                               self.funds,
+                                                               self.status)
+```
+
+Now if we try to print any transaction we will get a standard readable string:
+
+```python
+payment = Transaction("000001", 9999.999)
+print(payment)
+# Transaction 000001. Amount: 9999.999. Status: active
+```
